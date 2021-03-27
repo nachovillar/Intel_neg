@@ -13,10 +13,10 @@ def p_inversa(a1, ye, hn, C):
 
 #Training SNN via Pseudo_inverse
 def train_snn(xe, ye, hn, C):
-    n0 = xe.shape[0]        #numero de filas
+    n0 = xe.shape[0]        #numero de nodos de entrada
     w1 = ut.iniW(hn, n0)    
     z = np.dot(w1, xe)
-    a1 = 1/(1+np.exp(-z))
+    a1 = 1/(1 + np.exp(-z))
     w2 = p_inversa(a1, ye, hn, C)
     return(w1, w2)
 

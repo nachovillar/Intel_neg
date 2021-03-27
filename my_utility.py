@@ -18,5 +18,9 @@ def iniW(hn, n0):
     return w
 
 def save_w_npy(w1, w2):
-    #escribir el resutado
-    print("holitas")
+    # HACER FUNCION QUE GUARDA AMBAS MATRICES EN UN ARCHIVO
+    return
+
+def load_w_npy(filename):
+    
+    print(w1, w2)
