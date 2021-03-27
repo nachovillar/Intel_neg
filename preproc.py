@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+Created on Sat Mar 27 15:06:38 2021
 
+@author: Villar
 """
 
 import numpy as np
@@ -13,8 +15,8 @@ if __name__ == "__main__":
     config = pd.read_csv('config.csv', sep=",", header=None)
 
     p = config.loc[0, 0] /100
-    nodos_ocultos = config.loc[1, 0]
-    penalidad_pinversa = config.loc[2, 0]
+    hn = config.loc[1, 0]
+    C = config.loc[2, 0]
     
     a = 0.01
     b = 0.99
