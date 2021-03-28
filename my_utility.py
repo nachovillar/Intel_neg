@@ -23,3 +23,12 @@ def load_w_npy(filename):
     w1 = weight_data[0]
     w2 = weight_data[1]
     return(w1, w2)
+
+def snn_ff(xv, w1, w2):
+    z = np.dot(w1, xv)
+    a1 = 1/(1 + np.exp(-z))
+    zv = np.dot(w2, a1)
+    return zv
+    
+
+def metricas(yv, zv):
