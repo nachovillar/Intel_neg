@@ -34,16 +34,20 @@ def metricas(yv,zv):
     #ERROR DEL MODELO SNN
     err = yv - zv
     #MAE
-    mae = (np.absolute(yv - zv)).mean()
+    mae = (np.absolute(err)).mean()
     #MSE
-    mse = (np.square(yv - zv)).mean()
+    mse = (np.square(err)).mean()
     #RMSE
     rmse = np.sqrt(mse)
     #r2
     r2 = 1 - ((np.var(zv)) / (np.var(yv)))
-
-    print(err)
+    
     print(mae)
-    print (mse)
-    print (rmse)
-    print (r2)
+    print(mse)
+    print(rmse)
+    print(r2)
+
+    
+    vecto = np.array([ mae, mse, rmse, r2 ])
+    pd.DataFrame(vecto).to_csv("metricas.csv", header=None, index=None)
+    
