@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
-import math
 
 def load_data_txt(inp, out):
-    xe = pd.read_csv(inp, sep=",", header=None)
-    ye = pd.read_csv(out, sep=",", header=None)
+    xePd = pd.read_csv(inp, sep=",", header=None)
+    yePd = pd.read_csv(out, sep=",", header=None)
+    xe = xePd.to_numpy(dtype='float', na_value=np.nan)
+    ye = yePd.to_numpy(dtype='float', na_value=np.nan)
     return (xe, ye)
 
 def iniW(hn, n0):
@@ -15,20 +16,34 @@ def iniW(hn, n0):
     return w
 
 def save_w_npy(w1, w2):
-    np.savez("pesos", w1=w1, w2=w2)
-    
-def load_w_npy(filename):
-    container = np.load(filename)
-    weight_data = [container[key] for key in container]
-    w1 = weight_data[0]
-    w2 = weight_data[1]
-    return(w1, w2)
+    np.savez("pesos", w1, w2)
 
-def snn_ff(xv, w1, w2):
-    z = np.dot(w1, xv)
-    a1 = 1/(1 + np.exp(-z))
-    zv = np.dot(w2, a1)
-    return zv
-    
+def load_w_npy(file_w):
+    arrays = np.load(file_w)
+    w1 = arrays['arr_0']
+    w2 = arrays['arr_1']
+    return w1,w2
 
-def metricas(yv, zv):
+def snn_ff(xv,w1,w2):
+    z = np.dot(w1,xv)
+    a1 = 1/(1+np.exp(-z))
+    a2 = np.dot(w2,a1)
+    return a2
+
+def metricas(yv,zv):
+    #ERROR DEL MODELO SNN
+    err = yv - zv
+    #MAE
+    mae = (np.absolute(yv - zv)).mean()
+    #MSE
+    mse = (np.square(yv - zv)).mean()
+    #RMSE
+    rmse = np.sqrt(mse)
+    #r2
+    r2 = 1 - ((np.var(zv)) / (np.var(yv)))
+
+    print(err)
+    print(mae)
+    print (mse)
+    print (rmse)
+    print (r2)
