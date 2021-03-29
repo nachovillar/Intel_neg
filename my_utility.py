@@ -25,9 +25,10 @@ def load_w_npy(file_w):
     return w1,w2
 
 def snn_ff(xv,w1,w2):
-    z = np.dot(w1,xv)
+    z = np.dot(w1, xv)
     a1 = 1/(1+np.exp(-z))
-    a2 = np.dot(w2,a1)
+    zv = np.dot(w2, a1)
+    a2 = 1/(1+np.exp(-zv))
     return a2
 
 def metricas(yv,zv):

@@ -13,7 +13,9 @@ if __name__ == "__main__":
     X = pd.read_csv('x_input.csv', sep=",", header=None)
     Y = pd.read_csv('y_output.csv', sep=",", header=None)
     config = pd.read_csv('config.csv', sep=",", header=None)
-
+    
+    X = X.sample(frac=1)
+ 
     p = config.loc[0, 0] /100
     hn = config.loc[1, 0]
     C = config.loc[2, 0]
