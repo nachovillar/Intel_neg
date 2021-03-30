@@ -36,7 +36,13 @@ def main ():
     xe, ye = ut.load_data_txt(inp, out)
     w1, w2 = train_snn(xe, ye, hn, C)
     ut.save_w_npy(w1,w2)
-  
+    
+    ze = ut.snn_ff(xe, w1, w2)
+    ut.metricasTrain(ye, ze)
+    
+
+
+
     
 if __name__ == '__main__':
     main()

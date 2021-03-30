@@ -11,7 +11,7 @@ def main():
     xv, yv = ut.load_data_txt(inp, out)
     w1, w2 = ut.load_w_npy(file_w)
     zv = ut.snn_ff(xv, w1, w2)
-    ut.metricas(yv, zv)
+    ut.metricasTest(yv, zv)
 
 if __name__ == '__main__':
     main()

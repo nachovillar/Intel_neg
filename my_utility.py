@@ -31,7 +31,7 @@ def snn_ff(xv,w1,w2):
     a2 = 1/(1+np.exp(-zv))
     return a2
 
-def metricas(yv,zv):
+def metricasTest(yv, zv):
     #ERROR DEL MODELO SNN
     err = yv - zv
     #MAE
@@ -50,5 +50,25 @@ def metricas(yv,zv):
 
     
     vecto = np.array([ mae, mse, rmse, r2 ])
-    pd.DataFrame(vecto).to_csv("metricas.csv", header=None, index=None)
+    pd.DataFrame(vecto).to_csv("metricasTest.csv", header=None, index=None)
     
+def metricasTrain(ye, ze):
+    #ERROR DEL MODELO SNN
+    err = ye - ze
+    #MAE
+    mae = (np.absolute(err)).mean()
+    #MSE
+    mse = (np.square(err)).mean()
+    #RMSE
+    rmse = np.sqrt(mse)
+    #r2
+    r2 = 1 - ((np.var(ze)) / (np.var(ye)))
+    
+    print(mae)
+    print(mse)
+    print(rmse)
+    print(r2)
+
+    
+    vecto = np.array([ mae, mse, rmse, r2 ])
+    pd.DataFrame(vecto).to_csv("metricasTrain.csv", header=None, index=None)
