@@ -18,6 +18,7 @@ def train_snn(xe, ye, hn, C):
     z = np.dot(w1, xe)
     a1 = 1/(1 + np.exp(-z))
     w2 = p_inversa(a1, ye, hn, C)
+    
     return(w1, w2)
 
 #Load parameters of de SNN
@@ -36,13 +37,9 @@ def main ():
     xe, ye = ut.load_data_txt(inp, out)
     w1, w2 = train_snn(xe, ye, hn, C)
     ut.save_w_npy(w1,w2)
-    
-    ze = ut.snn_ff(xe, w1, w2)
-    ut.metricasTrain(ye, ze)
-    
 
+    a1, ze = ut.snn_ff(xe, w1, w2)
+    ut.metricasTrain(a1, ye, ze)
 
-
-    
 if __name__ == '__main__':
     main()

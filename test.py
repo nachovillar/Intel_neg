@@ -10,8 +10,8 @@ def main():
     file_w = 'pesos.npz'
     xv, yv = ut.load_data_txt(inp, out)
     w1, w2 = ut.load_w_npy(file_w)
-    zv = ut.snn_ff(xv, w1, w2)
-    ut.metricasTest(yv, zv)
+    a2, zv = ut.snn_ff(xv, w1, w2)
+    ut.metricasTest(a2, yv, zv)
 
 if __name__ == '__main__':
     main()

@@ -13,9 +13,7 @@ if __name__ == "__main__":
     X = pd.read_csv('x_input.csv', sep=",", header=None)
     Y = pd.read_csv('y_output.csv', sep=",", header=None)
     config = pd.read_csv('config.csv', sep=",", header=None)
-    
-    X = X.sample(frac=1)
- 
+
     p = config.loc[0, 0] /100
     hn = config.loc[1, 0]
     C = config.loc[2, 0]
@@ -51,9 +49,9 @@ if __name__ == "__main__":
     yv = normalized_Y.iloc[:, L:]
     
  
-    xe.to_csv(path_or_buf = 'train_x.csv', index = False    , mode = 'w+')
-    ye.to_csv(path_or_buf = 'train_y.csv', index = False    , mode = 'w+')    
+    xe.to_csv(path_or_buf = 'train_x.csv', index = False    , mode = 'w+', header = None)
+    ye.to_csv(path_or_buf = 'train_y.csv', index = False    , mode = 'w+', header = None)    
     
-    xv.to_csv(path_or_buf = 'test_x.csv', index = False    , mode = 'w+')
-    yv.to_csv(path_or_buf = 'test_y.csv', index = False    , mode = 'w+')
+    xv.to_csv(path_or_buf = 'test_x.csv', index = False    , mode = 'w+', header = None)
+    yv.to_csv(path_or_buf = 'test_y.csv', index = False    , mode = 'w+', header = None)
     

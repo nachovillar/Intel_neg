@@ -29,11 +29,12 @@ def snn_ff(xv,w1,w2):
     a1 = 1/(1+np.exp(-z))
     zv = np.dot(w2, a1)
     a2 = 1/(1+np.exp(-zv))
-    return a2
+    
+    return a2, zv
 
-def metricasTest(yv, zv):
+def metricasTest(a2, yv, zv):
     #ERROR DEL MODELO SNN
-    err = yv - zv
+    err = yv - a2
     #MAE
     mae = (np.absolute(err)).mean()
     #MSE
@@ -41,20 +42,24 @@ def metricasTest(yv, zv):
     #RMSE
     rmse = np.sqrt(mse)
     #r2
-    r2 = 1 - ((np.var(zv)) / (np.var(yv)))
+    r2 = 1 - ((np.var(a2)) / (np.var(yv)))
     
     print(mae)
     print(mse)
     print(rmse)
     print(r2)
 
+    yz = []
+    yz = np.hstack((yv.T, zv.T))
+    np.savetxt("costos_test.csv", yz, delimiter=' ',fmt='%.6f')
     
+
     vecto = np.array([ mae, mse, rmse, r2 ])
     pd.DataFrame(vecto).to_csv("metricasTest.csv", header=None, index=None)
     
-def metricasTrain(ye, ze):
+def metricasTrain(a1, ye, ze):
     #ERROR DEL MODELO SNN
-    err = ye - ze
+    err = ye - a1
     #MAE
     mae = (np.absolute(err)).mean()
     #MSE
@@ -62,13 +67,16 @@ def metricasTrain(ye, ze):
     #RMSE
     rmse = np.sqrt(mse)
     #r2
-    r2 = 1 - ((np.var(ze)) / (np.var(ye)))
+    r2 = 1 - ((np.var(a1)) / (np.var(ye)))
     
     print(mae)
     print(mse)
     print(rmse)
     print(r2)
-
+ 
+    yz = []
+    yz = np.hstack((ye.T, ze.T))
+    np.savetxt("costos_train.csv", yz, delimiter=' ',fmt='%.6f')
     
     vecto = np.array([ mae, mse, rmse, r2 ])
     pd.DataFrame(vecto).to_csv("metricasTrain.csv", header=None, index=None)
