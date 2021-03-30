@@ -44,18 +44,18 @@ def metricasTest(a2, yv, zv):
     #r2
     r2 = 1 - ((np.var(a2)) / (np.var(yv)))
     
-    print(mae)
-    print(mse)
-    print(rmse)
-    print(r2)
+    print("MAE: ",mae)
+    print("MSE: ",mse)
+    print("RMSE: ",rmse)
+    print("R2: ",r2)
 
     yz = []
     yz = np.hstack((yv.T, zv.T))
-    np.savetxt("costos_test.csv", yz, delimiter=' ',fmt='%.6f')
+    np.savetxt("test_costo.csv", yz, delimiter=' ',fmt='%.6f')
     
 
     vecto = np.array([ mae, mse, rmse, r2 ])
-    pd.DataFrame(vecto).to_csv("metricasTest.csv", header=None, index=None)
+    pd.DataFrame(vecto).to_csv("test_metrica.csv", header=None, index=None)
     
 def metricasTrain(a1, ye, ze):
     #ERROR DEL MODELO SNN
@@ -69,14 +69,14 @@ def metricasTrain(a1, ye, ze):
     #r2
     r2 = 1 - ((np.var(a1)) / (np.var(ye)))
     
-    print(mae)
-    print(mse)
-    print(rmse)
-    print(r2)
+    print("MAE: ",mae)
+    print("MSE: ",mse)
+    print("RMSE: ",rmse)
+    print("R2: ",r2)
  
     yz = []
     yz = np.hstack((ye.T, ze.T))
-    np.savetxt("costos_train.csv", yz, delimiter=' ',fmt='%.6f')
+    np.savetxt("train_costo.csv", yz, delimiter=' ',fmt='%.6f')
     
     vecto = np.array([ mae, mse, rmse, r2 ])
-    pd.DataFrame(vecto).to_csv("metricasTrain.csv", header=None, index=None)
+    pd.DataFrame(vecto).to_csv("train_metrica.csv", header=None, index=None)
