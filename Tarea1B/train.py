@@ -12,12 +12,21 @@ def p_inversa(a1, ye, hn, C):
     return(w2)
 
 #Training SNN via Pseudo_inverse
-def train_snn(xe, ye, hn, C):
-    n0 = xe.shape[0]        #numero de nodos de entrada
-    w1 = ut.iniW(hn, n0)    
-    z = np.dot(w1, xe)
-    a1 = 1/(1 + np.exp(-z))
-    w2 = p_inversa(a1, ye, hn, C)
+def train_snn(xe, ye, hn, mu, maxIter):
+    w1, w2 = ut.iniW_snn(xe.shape[0], param[1], 1)
+    for iter in range (param[3]):
+        Act = ut.ff_snn(xe, w1, w2)
+        w1, w2, cost = ut.fb_snn(Act, ye ,w1, w2, param[2])
+        mse.append(cost)
+        if((iter % 200) == 0):
+            print('iter:{:.5f}'.format(cost))
+    return(w1, w2, mse)
+
+    #n0 = xe.shape[0]        #numero de nodos de entrada
+    #w1 = ut.iniW(hn, n0)    
+    #z = np.dot(w1, xe)
+    #a1 = 1/(1 + np.exp(-z))
+    #w2 = p_inversa(a1, ye, hn, C)
     
     return(w1, w2)
 

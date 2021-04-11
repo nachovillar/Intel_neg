@@ -14,6 +14,7 @@ def normalizar(X):
     X_max = X.max(axis=1)
     aux = (((X-X_min)/(X_max-X_min))*(b-a))+a
     return aux.T
+    
 if __name__ == "__main__":
     
     X = pd.read_csv('x_input.csv', sep=",", header=None)
