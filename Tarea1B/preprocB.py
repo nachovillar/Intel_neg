@@ -22,8 +22,9 @@ if __name__ == "__main__":
 
     p = config.loc[0, 0] /100
     hn = config.loc[1, 0]
-    C = config.loc[2, 0]
-    
+    mu = config.loc[2, 0]
+    maxIter = config.loc[3, 0]
+
     a = 0.01
     b = 0.99
     
