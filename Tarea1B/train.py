@@ -4,8 +4,13 @@ import math
 import my_utility as ut
 
 
-#Training SNN via Pseudo_inverse
-def train(xe, ye, hn, mu, maxIter):
+
+def train(xe, ye, param):
+    
+    hn = param[0]
+    mu = param[1]
+    maxIter = param[2]
+
     w1, w2 = ut.iniW_snn(xe, ye, hn, mu)
     mse = []
     for iter in range (maxIter):
@@ -21,8 +26,9 @@ def main ():
     inp = "train_x.csv"
     out = "train_y.csv"
     p, hn, mu, maxIter = ut.load_config()
+    param = [hn, mu, maxIter]
     xe, ye = ut.load_data_txt(inp, out)
-    w1, w2, mse = train(xe, ye, hn, mu, maxIter)
+    w1, w2, mse = train(xe, ye, param)
     ut.save_w_npy(w1, w2, mse)
 
     a1, ze = ut.snn_ff(xe, w1, w2)
