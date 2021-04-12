@@ -24,6 +24,15 @@ def load_w_npy(file_w):
     w2 = arrays['arr_1']
     return w1,w2
 
+def ff_snn(xe,w1,w2):
+    a = {}
+    a[0] = x;
+    z = np.dot(w1,a[0])
+    a[1] = 1 / (1 + np.exp(-z))
+    z = np.dot(w2, a[1])
+    a[2] = 1 / (1 + np.exp(-z))
+return (a)
+
 def snn_ff(xv,w1,w2):
     z = np.dot(w1, xv)
     a1 = 1/(1+np.exp(-z))
