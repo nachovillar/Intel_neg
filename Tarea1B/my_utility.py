@@ -85,12 +85,12 @@ def metricasTest(a2, yv):
     #RMSE
     rmse = np.sqrt(mse)
     #r2
-    r2 = 1 - ((np.var(err)) / (np.var(yv)))
+    r2 = 1 - ((np.var(err)) / (np.var(a2)))
     
-    print("MAE: ",mae)
-    print("MSE: ",mse)
-    print("RMSE: ",rmse)
-    print("R2: ",r2*100)
+    print("MAE: ", mae)
+    print("MSE: ", mse)
+    print("RMSE: ", rmse)
+    print("R2: ", r2*100)
 
     yz = []
     yz = np.hstack((yv.T, a2.T))
