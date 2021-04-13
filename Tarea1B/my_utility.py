@@ -53,11 +53,28 @@ def load_w_npy(file_w):
 def ff_snn(x, w1, w2):
     a0 = x
     z = np.dot(w1, x)
-    a1 = 1/(1+np.exp(-z))
+    a1 = 1 / (1 + np.exp(-z))
     zv = np.dot(w2, a1)
-    a2 = 1/(1+np.exp(-zv))
+    a2 = 1 / (1 + np.exp(-zv))
     Act = [a0, a1, a2]
-    return Act, zv
+    return (Act)
+
+def fb_snn(Act, ye ,w1, w2, mu):
+    
+    e = (Act[2] - ye)
+    dw1 = np.multiply(e, Act[2]*(1-Act[2]))
+    dz1 = np.dot(dw1,Act[1].T)  
+    w1 = dz1 - mu * dz1
+
+    dw2 = np.multiply(e, Act[2]*(1-Act[2]))
+    dz2 = np.dot(dw2, Act[2].T)  
+    w2 = dz2 - mu * dz2
+
+
+
+    cost = [dz1, dz2]
+
+    return (w1, w2, cost )
 
 def metricasTest(a2, yv, zv):
     #ERROR DEL MODELO SNN
