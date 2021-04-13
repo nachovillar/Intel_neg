@@ -11,7 +11,7 @@ def train(xe, ye, param):
     
     mse = []
     for iter in range(param[3]):
-        Act, zv = ut.ff_snn(xe, w1, w2)
+        Act = ut.ff_snn(xe, w1, w2)
         w1, w2, cost = ut.fb_snn(Act, ye ,w1, w2, param[2])
         mse.append(cost)
         if((iter % 200) == 0):

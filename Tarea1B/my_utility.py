@@ -41,7 +41,7 @@ def iniW_snn(xe, ye, hn, mu):
 
 def save_w_npy(w1, w2, mse):
     np.savez("pesos.npz", w1=w1, w2=w2)
-    np.savetxt("train_costo.csv", mse, delimiter=' ', fmt='%.6f')
+    np.savetxt("train_costo.csv", mse, delimiter='', fmt='%.6f')
 
 def load_w_npy(file_w):
     arrays = np.load(file_w)
@@ -57,7 +57,7 @@ def ff_snn(x, w1, w2):
     zv = np.dot(w2, a1)
     a2 = 1 / (1 + np.exp(-zv))
     Act = [a0, a1, a2]
-    return (Act, zv)
+    return (Act)
 
 def derivate_act(a):
     da = a*(1-a)
@@ -75,7 +75,7 @@ def fb_snn(a,ye,w1,w2,mu):
     return(w1,w2,Cost)
 
 
-def metricasTest(a2, yv, zv):
+def metricasTest(a2, yv):
     #ERROR DEL MODELO SNN
     err = yv - a2
     #MAE
@@ -85,15 +85,15 @@ def metricasTest(a2, yv, zv):
     #RMSE
     rmse = np.sqrt(mse)
     #r2
-    r2 = 1 - ((np.var(a2)) / (np.var(yv)))
+    r2 = 1 - ((np.var(err)) / (np.var(yv)))
     
     print("MAE: ",mae)
     print("MSE: ",mse)
     print("RMSE: ",rmse)
-    print("R2: ",r2)
+    print("R2: ",r2*100)
 
     yz = []
-    yz = np.hstack((yv.T, zv.T))
+    yz = np.hstack((yv.T, a2.T))
     np.savetxt("test_costo.csv", yz, delimiter=' ',fmt='%.6f')
     
 
