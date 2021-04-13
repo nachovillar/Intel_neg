@@ -6,33 +6,28 @@ import my_utility as ut
 
 
 def train(xe, ye, param):
-    
-    hn = param[0]
-    mu = param[1]
-    maxIter = param[2]
 
-    w1, w2 = ut.iniW_snn(xe, ye, hn, mu)
+    w1, w2 = ut.iniW_snn(xe, ye, param[1], param[2])
+    
     mse = []
-    for iter in range (maxIter):
+    for iter in range(param[3]):
         Act, zv = ut.ff_snn(xe, w1, w2)
-        w1, w2, cost = ut.fb_snn(Act, ye ,w1, w2, mu)
+        w1, w2, cost = ut.fb_snn(Act, ye ,w1, w2, param[2])
         mse.append(cost)
         if((iter % 200) == 0):
-            print('iter:{:.5f}'.format(cost))
+            print('iter: {:.5f}'.format(cost))
     return(w1, w2, mse)
 
 # doing the complete rutine
 def main ():
     inp = "train_x.csv"
     out = "train_y.csv"
-    p, hn, mu, maxIter = ut.load_config()
-    param = [hn, mu, maxIter]
-    xe, ye = ut.load_data_txt(inp, out)
-    w1, w2, mse = train(xe, ye, param)
+    par_config = ut.load_config()
+    xe = ut.load_data_txt(inp)
+    ye = ut.load_data_txt(out)
+    w1, w2, mse = train(xe, ye, par_config)
     ut.save_w_npy(w1, w2, mse)
-
-    a1, ze = ut.ff_snn(xe, w1, w2)
-    ut.metricasTrain(a1, ye, ze)
+    
 
 if __name__ == '__main__':
     main()

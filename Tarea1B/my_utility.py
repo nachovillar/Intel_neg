@@ -3,27 +3,25 @@ import pandas as pd
 
 #Load parameters of de SNN
 def load_config():
-    aux = pd.read_csv('config.csv', sep=",", header=None)
-    p = aux.loc[0, 0] /100  #% de training
-    hn = aux.loc[1, 0]      #Hiden notes
-    mu = aux.loc[2, 0]
-    maxIter = aux.loc[3, 0]   #Maximo de Iteraciones 
+    par = np.genfromtxt("config.csv", delimiter=',')
+    param = []
+    param.append(np.int8(par[0]))
+    param.append(np.int8(par[1]))
+    param.append(np.float(par[2]))
+    param.append(np.int_(par[3]))
+    return(param)
 
-    return (p,hn,mu,maxIter)
-
-def load_data_txt(inp, out):
-    xePd = pd.read_csv(inp, sep=",", header=None)
-    yePd = pd.read_csv(out, sep=",", header=None)
-    xe = xePd.to_numpy(dtype='float', na_value=np.nan)
-    ye = yePd.to_numpy(dtype='float', na_value=np.nan)
-    return (xe, ye)
+def load_data_txt(filename):
+    x = pd.read_csv(filename, header=None)
+    x = np.array(x)
+    return(x)
 
 def iniW(hn, n0):
-    w = np.random.random((hn, n0))
+    w = np.random.rand(hn, n0)
     x = hn + n0
     r = np.sqrt(6/x)
     w = w*2*r - r
-    return w
+    return(w)
 
 #Pseudo inverse
 def p_inversa(a1, ye, hn, mu):
@@ -42,40 +40,25 @@ def iniW_snn(xe, ye, hn, mu):
     return(w1, w2)
 
 def save_w_npy(w1, w2, mse):
-    np.savez("pesos", w1, w2, mse)
+    np.savez("pesos.npz", w1=w1, w2=w2)
+    np.savetxt("train_costo.csv", mse, delimiter=' ', fmt='%.6f')
 
 def load_w_npy(file_w):
     arrays = np.load(file_w)
-    w1 = arrays['arr_0']
-    w2 = arrays['arr_1']
-    return w1,w2
+
+    w1 = arrays['w1']
+    w2 = arrays['w2']
+    return(w1, w2)
 
 def ff_snn(x, w1, w2):
     a0 = x
-    z = np.dot(w1, x)
+    z = np.dot(w1, a0)
     a1 = 1 / (1 + np.exp(-z))
     zv = np.dot(w2, a1)
     a2 = 1 / (1 + np.exp(-zv))
     Act = [a0, a1, a2]
-    return (Act,zv)
-'''
-def fb_snn(Act, ye ,w1, w2, mu):
-    
-    e = (Act[2] - ye)
-    dw1 = np.multiply(e, Act[2]*(1-Act[2]))
-    dz1 = np.dot(dw1,Act[1].T)  
-    w1 = dz1 - mu * dz1
+    return (Act, zv)
 
-    dw2 = np.multiply(e, Act[2]*(1-Act[2]))
-    dz2 = np.dot(dw2, Act[2].T)  
-    w2 = dz2 - mu * dz2 
-
-
-
-    cost = [dz1, dz2]
-
-    return (w1, w2, cost )
-    '''
 def derivate_act(a):
     da = a*(1-a)
     return(da)
@@ -85,14 +68,11 @@ def fb_snn(a,ye,w1,w2,mu):
     Cost = np.mean(e**2)
     dOut = e * derivate_act(a[2])
     gradW2 = np.dot(dOut, a[1].T)
-    dHidden = np.dot(w2.T,dOut) * derivate_act(a[1])
+    dHidden = (np.dot(w2.T, dOut)) * (derivate_act(a[1]))
     gradW1 = np.dot(dHidden, a[0].T)
     w2 = w2 - mu*gradW2
     w1 = w1 - mu*gradW1
     return(w1,w2,Cost)
-
-
-
 
 
 def metricasTest(a2, yv, zv):
