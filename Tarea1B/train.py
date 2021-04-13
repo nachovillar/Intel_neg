@@ -14,7 +14,7 @@ def train(xe, ye, param):
     w1, w2 = ut.iniW_snn(xe, ye, hn, mu)
     mse = []
     for iter in range (maxIter):
-        Act = ut.ff_snn(xe, w1, w2)
+        Act, zv = ut.ff_snn(xe, w1, w2)
         w1, w2, cost = ut.fb_snn(Act, ye ,w1, w2, mu)
         mse.append(cost)
         if((iter % 200) == 0):
@@ -31,7 +31,7 @@ def main ():
     w1, w2, mse = train(xe, ye, param)
     ut.save_w_npy(w1, w2, mse)
 
-    a1, ze = ut.snn_ff(xe, w1, w2)
+    a1, ze = ut.ff_snn(xe, w1, w2)
     ut.metricasTrain(a1, ye, ze)
 
 if __name__ == '__main__':

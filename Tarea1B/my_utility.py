@@ -57,8 +57,8 @@ def ff_snn(x, w1, w2):
     zv = np.dot(w2, a1)
     a2 = 1 / (1 + np.exp(-zv))
     Act = [a0, a1, a2]
-    return (Act)
-
+    return (Act,zv)
+'''
 def fb_snn(Act, ye ,w1, w2, mu):
     
     e = (Act[2] - ye)
@@ -68,13 +68,32 @@ def fb_snn(Act, ye ,w1, w2, mu):
 
     dw2 = np.multiply(e, Act[2]*(1-Act[2]))
     dz2 = np.dot(dw2, Act[2].T)  
-    w2 = dz2 - mu * dz2
+    w2 = dz2 - mu * dz2 
 
 
 
     cost = [dz1, dz2]
 
     return (w1, w2, cost )
+    '''
+def derivate_act(a):
+    da = a*(1-a)
+    return(da)
+
+def fb_snn(a,ye,w1,w2,mu):
+    e = a[2] - ye
+    Cost = np.mean(e**2)
+    dOut = e * derivate_act(a[2])
+    gradW2 = np.dot(dOut, a[1].T)
+    dHidden = np.dot(w2.T,dOut) * derivate_act(a[1])
+    gradW1 = np.dot(dHidden, a[0].T)
+    w2 = w2 - mu*gradW2
+    w1 = w1 - mu*gradW1
+    return(w1,w2,Cost)
+
+
+
+
 
 def metricasTest(a2, yv, zv):
     #ERROR DEL MODELO SNN
