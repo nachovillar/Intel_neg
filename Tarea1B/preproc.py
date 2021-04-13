@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+
 if __name__ == "__main__":
     
     X = pd.read_csv('x_input.csv', sep=",", header=None)
@@ -28,6 +29,9 @@ if __name__ == "__main__":
     X = X.T
     Y = Y.T
     
+    X=np.random(X)
+    Y=np.random(Y)
+    
     normalized_X = (X-X_min)/(X_max-X_min)
     normalized_X = (b-a)*normalized_X + a
     normalized_X = normalized_X.T
@@ -48,4 +52,3 @@ if __name__ == "__main__":
     
     xv.to_csv(path_or_buf = 'test_x.csv', index = False    , mode = 'w+', header = None)
     yv.to_csv(path_or_buf = 'test_y.csv', index = False    , mode = 'w+', header = None)
-    
