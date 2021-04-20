@@ -34,9 +34,10 @@ def p_inversa(a1, ye, hn, mu):
 def iniW_snn(xe, ye, hn, mu):
     n0 = xe.shape[0]      #numero de nodos de entrada
     w1 = iniW(hn, n0)    
-    z = np.dot(w1, xe)
-    a1 = 1/(1 + np.exp(-z))
-    w2 = p_inversa(a1, ye, hn, mu)
+    #z = np.dot(w1, xe)
+    #a1 = 1/(1 + np.exp(-z))
+    #w2 = p_inversa(a1, ye, hn, mu)
+    w2 = iniW(1, hn)
     return(w1, w2)
 
 def save_w_npy(w1, w2, mse):
