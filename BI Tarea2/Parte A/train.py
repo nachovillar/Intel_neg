@@ -12,7 +12,8 @@ def train_softmax(x,y,param):
 # AE's Training 
 
 def train_ae(x,hnode,param):
-    #completar code ...
+    w1 = ut.iniW(hnode, x.shape[0])
+    for i in range(param[3])
     return(w1)
 
 def train_sae(x,param):

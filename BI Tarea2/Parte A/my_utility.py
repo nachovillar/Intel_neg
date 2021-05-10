@@ -3,14 +3,24 @@ import pandas as pd
 import numpy  as np
 
 # Calculate Pseudo-inverse
-def pinv_ae(): 
-    #Completar code    
-    return()
+def pinv_ae(a1, x, hn, C): 
+    yh = np.dot(x, a1.T)
+    ai = np.dot(a1, a1.T) + np.eye(hn)/C
+    p_inv = np.linalg.pinv(ai)
+    w2 = np.dot(yh, p_inv)
+    return(w2)
 
 #AE's Feed-Backward
-def backward_ae():
-    #Completar code    
-    return()    
+def backward_ae(a,x,w1,w2,mu):
+    e = a[2] - ye
+    Cost = np.mean(e**2)
+    dOut = e * derivate_act(a[2])
+    gradW2 = np.dot(dOut, a[1].T)
+    dHidden = (np.dot(w2.T, dOut)) * (derivate_act(a[1]))
+    gradW1 = np.dot(dHidden, a[0].T)
+    w2 = w2 - mu*gradW2
+    w1 = w1 - mu*gradW1
+    return(w1,w2,Cost)      
 
     
 #Activation function
