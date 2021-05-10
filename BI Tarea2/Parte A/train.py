@@ -6,14 +6,25 @@ import my_utility as ut
 	
 # Softmax's training
 def train_softmax(x,y,param):
-    #Completar code...
-    return(w,costo)
+    w=ut.iniW(y.shape[0],x.shape[0])
+    costo=[]
+    for i in range(param[0]):
+        G=ut.softmax_grad(x,y,w,param[2])
+        gradW=G[0]
+        c=G[1]
+        costo.append(c)
+        w=w-param[1]*gradW
+    return w,costo
 
 # AE's Training 
 
 def train_ae(x,hnode,param):
     w1 = ut.iniW(hnode, x.shape[0])
-    for i in range(param[3])
+    z = np.dot(w1, x)
+    a = 1/(1 + np.exp(-z))
+    w2 = ut.pinv_ae(x, w1, param[2])
+    for i in range(param[3]):
+        w1 = ut.backward_ae(x,w1,w2,param[1])
     return(w1)
 
 def train_sae(x,param):
