@@ -3,9 +3,13 @@ import numpy as np
 import my_utility as ut
 
 
-def forward_dl(x,w): 
-    #completar...
-    return()
+def forward_dl(xv,W): 
+    L=len(W)
+    x=xv
+    for i in range(L-1):
+        x = ut.act_sigmoid(np.dot(W[i],x))
+    zv = ut.softmax(np.dot(W[L-1],x))
+    return(zv)
 
 # Beginning ...
 def main():		

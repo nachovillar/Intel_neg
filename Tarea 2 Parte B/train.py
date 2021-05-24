@@ -6,11 +6,17 @@ import my_utility as ut
 	
 
 def train_softmax(x,y,param):
-    #completar....
+    w=ut.randW(y.shape[0],x.shape[0])
+    costo=[]
+    for iter in range(1,param[0]):
+        gradW, cost = ut.softmax_grad(x,y,w,param[2])
+        costo.append(cost)
+        w = w - (param[1]*gradW)
     return(w,costo)
 
 def get_miniBatch(i,x,bsize):
-    #completar...
+    xe = x.T[bsize*i:bsize*(i+1)]
+    xe = xe.T
     return(xe)
 
 def train_dae(x,W,numBatch,BatchSize,mu):
