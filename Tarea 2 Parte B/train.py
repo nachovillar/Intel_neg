@@ -36,7 +36,7 @@ def train_dl(x,param):
         xe  = x[:,np.random.permutation(x.shape[1])]
         mu  = param[0]/(1+tau*Iter)     
         W   = train_dae(xe,W,numBatch,param[1],mu)            
-    return(w) 
+    return(W) 
    
 # Beginning ...
 def main():
