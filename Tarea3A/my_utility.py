@@ -69,16 +69,12 @@ def updW_dae(w,v,gW,mu):
     return(w,v)
 #    
 # Update Softmax's weight with RMSprop
-def updW_softmax(w,v,gW,mu):    
+def updW_softmax(w,v,gW,mu):  #w:pesos v:matrizSimilarAW de Ceros gW:gradienteDepesos mu:esta listo  
     # completar code
     
     return(w,v)
 
 # Initialize weights of the Deep-AE
-#def ini_WV(...):
-    # completar code
- #   return(W)
-
 def ini_WV(input,nodesEnc):
     #print(input)
     #print(nodesEnc)
@@ -88,6 +84,7 @@ def ini_WV(input,nodesEnc):
     #print("ITER1:")
     for n in range(len(nodesEnc)):
         W.append(randW(nodesEnc[n],prev))
+        #print(prev)
         prev = nodesEnc[n]
     #print("ITER2:")
     for n in reversed(W):
@@ -115,7 +112,7 @@ def ini_WV(input,nodesEnc):
         print(n)
         print(np.shape(n))
     '''
-    print(V)
+    #print(V)
     return(W,V)
 
 # Initialize random weights
@@ -197,22 +194,19 @@ def load_data_csv(fname):
 
 # save weights of the DL in numpy format
 #W,Ws,'w_dl.npz',cost,'costo_softmax.csv'
-#def save_w_dl(W,Ws,nfile_w,cost,nfile_sft):    
-    # cmpletar code
-    
 def save_w_dl(W,Ws,npy_w,cost,csv_cost):
     np.savetxt(csv_cost, cost, delimiter=",")
     W.append(Ws)
     np.savez(npy_w, W=W)
     return()
     
- 
+
 #load weight of the DL in numpy format
 def load_w_dl(npy_w):
     w = np.load(npy_w, allow_pickle=True)
     return w['W']
 
 # save weights in numpy format
-def save_w_npy(w1,w2,mse):  
-    # completar code
-    return()
+def save_w_npy(w1, w2, mse):
+    np.savez("pesos.npz", w1=w1, w2=w2)
+    np.savetxt("train_costo.csv", mse, delimiter='', fmt='%.6f')
