@@ -7,7 +7,8 @@ import my_utility as ut
 # Softmax's training
 
 def train_softmax(x,y,param):
-    w,v = ut.randW(y.shape[0],x.shape[0])
+    w = ut.randW(y.shape[0],x.shape[0])
+    v = np.zeros(np.shape(w))
     costo = []
     for iter in range(param[0]):
         gW,cost = ut.softmax_grad(x,y,w) 
@@ -24,9 +25,9 @@ def get_miniBatch(i,x,bsize):
 def train_dae(x,W,V,mu,numBatch,BatchSize):
     for i in range(numBatch):
         xe   = get_miniBatch(i,x,BatchSize)
-        Act  = ut.forward_dae(xe,W)              
-        gW   = ut.grad_bp_dae(Act,W) 
-        W,V  = ut.updW_dae(W,V,gW,mu); #alg rmsprop falta estoooo
+        Act  = ut.forward_dae(xe,W)
+        gW   = ut.grad_bp_dae(Act,W)
+        W,V  = ut.updW_dae(W,V,gW,mu);  #eReMeSPPROP
     return(W)
 
 #Deep Learning: Training
@@ -34,7 +35,7 @@ def train_dl(x,param):
     W,V     = ut.ini_WV(x.shape[0],param[3:])
     numBatch = np.int16(np.floor(x.shape[1]/param[1]))
     for Iter in range(param[2]):        
-        xe  = x[:,np.random.permutation(x.shape[1])]        
+        xe  = x[:,np.random.permutation(x.shape[1])] 
         W   = train_dae(xe,W,V,param[0],numBatch,param[1])            
     return(W) 
    
@@ -45,7 +46,7 @@ def main():
                                             #minibachsize 32
                                             #maxiter 100
                                             #256
-                                            #128 
+                                            #128
                                         #paramSoftmax 
                                             #maxiter 2000
                                             #Learning(mu) 0.001

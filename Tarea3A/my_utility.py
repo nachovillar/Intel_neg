@@ -65,54 +65,39 @@ def grad_bp_dae(a,w):
 # Update DAE's weight with RMSprop
 def updW_dae(w,v,gW,mu):
     #w:pesos 
-    #v:matrizSimilarAW de Ceros 
+    #v:matrizSimilarA W,fill of de zeros 
     #gW:gradienteDepesos 
     #mu(learn rate): 0.001
 
-    print("rmsprop")
-    #print(w[0])
-    #print(np.shape(w[1]))
-    #print("v")
-    #print(np.shape(v[1]))
-    #print("gW")
-    #print(np.shape(gW[1]))
-    #print(len(w))
     #Parametros
     u = 10**-3
     eps = 10**-10
     b = 0.9
-    
+
     for i in range(len(w)):
         v[i] = b*v[i] + (1-b)*(gW[i])**2
-        #gRMS_a = (u/(np.sqrt(v[i] + eps)))
-        #gRMS = np.dot((u/(np.sqrt(v[i] + eps))),gW[i])         gw[i].T?
-        gRMS = np.multiply((u/(np.sqrt(v[i] + eps))), gW[i])
-        print(gRMS[0])
+        gRMS_a = (u/(np.sqrt(v[i] + eps)))
+        gRMS = gRMS_a*gW[i]
         w[i] = w[i] - gRMS
-        
-    #print(w[0])
+    
     return(w,v)
-
-
-def updW_sgd(w,gradW,mu):
-    for i in range(len(w)):
-        tau = mu/len(w)
-        mu_k = mu/(1+np.dot(tau,(i+1)))
-        w[i] = w[i] - mu_k*gradW[i]
-    return(w)
-#    
+  
 # Update Softmax's weight with RMSprop
 def updW_softmax(w,v,gW,mu):  #w:pesos v:matrizSimilarAW de Ceros gW:gradienteDepesos mu:esta listo  
-        
-
-    
+    u = 10**-3
+    eps = 10**-10
+    b = 0.9
+    v = b*v + (1-b)*(gW)**2
+    gRMS_a = (u/(np.sqrt(v + eps)))
+    gRMS = gRMS_a*gW
+    w = w - gRMS
     return(w,v)
 
 # Initialize weights of the Deep-AE
 
 def ini_WV(input,nodesEnc):
-    #print(input)
-    #print(nodesEnc)
+    #(2000,0.001)
+    #(256,128)
     W = []
     V = []
     prev = input
@@ -124,15 +109,6 @@ def ini_WV(input,nodesEnc):
     for n in reversed(W):
         W.append(randW(n.shape[1],n.shape[0]))
         V.append(np.zeros((n.shape[1],n.shape[0])))
-    
-    #print("outIter")
-    
-    #print (type(W)) #tipo de dato lista?
-    #Shape = np.shape(W)
-    #print(Shape)
-    
-    #print(W)
-    #print(V)
     return(W,V)
 
 # Initialize random weights
@@ -140,9 +116,6 @@ def randW(next,prev):
     r  = np.sqrt(6/(next+ prev))
     w  = np.random.rand(next,prev)
     w  = w*2*r-r
-    #print("randW:")
-    #print(w)
-    #print(np.shape(w))
     return(w)
 
 #Forward Softmax
