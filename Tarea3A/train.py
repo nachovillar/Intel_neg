@@ -26,13 +26,13 @@ def train_dae(x,W,V,mu,numBatch,BatchSize):
         xe   = get_miniBatch(i,x,BatchSize)
         Act  = ut.forward_dae(xe,W)              
         gW   = ut.grad_bp_dae(Act,W) 
-        W,V  = ut.updW_dae(W,V,gW,mu); #alg rmspro falta estoooo
+        W,V  = ut.updW_dae(W,V,gW,mu); #alg rmsprop falta estoooo
     return(W)
 
 #Deep Learning: Training
 def train_dl(x,param):
     W,V     = ut.ini_WV(x.shape[0],param[3:])
-    numBatch = np.int16(np.floor(x.shape[1]/param[1]))        
+    numBatch = np.int16(np.floor(x.shape[1]/param[1]))
     for Iter in range(param[2]):        
         xe  = x[:,np.random.permutation(x.shape[1])]        
         W   = train_dae(xe,W,V,param[0],numBatch,param[1])            
@@ -51,7 +51,6 @@ def main():
                                             #Learning(mu) 0.001
     xe              = ut.load_data_csv('train_x.csv')    
     ye              = ut.load_data_csv('train_y.csv')
-    #print(ye.shape[0])
     W               = train_dl(xe,par_dae) 
     Xr              = ut.encoder(xe,W)
     Ws, cost        = train_softmax(Xr,ye,par_sft)
