@@ -10,13 +10,53 @@ def get_miniBatch(i,x,bsize):
 
 #STEP 1: Feed-forward of DAE
 def forward_dl(x,w):
-	#completar code
-    return(...)    
+    Act=[]
+    a0=x
+    
+    z=np.dot(w[0],x)
+    a1=act_sigmoid(z)
+    
+    Act.append(a0)
+    Act.append(a1)
+    
+    ai=a1
+    
+    for i in range(len(w)):
+        if i != 0:
+            zi=np.dot(w[i],ai)
+            ai=act_sigmoid(zi)
+            Act.append(ai)
+    return(Act)    
 
 # STEP 2: Gradiente via BackPropagation
-def grad_bp_dl(...):
-    #completar code    
-    return(...)    
+def grad_bp_dl(a,w):
+    gradW = [None]*len(w)
+    deltas = [None]*len(w)
+    
+    for idx in reversed(range(len(w))):
+        if(idx != (len(w)-1)):
+            delta_next = deltas[idx+1]
+            
+            delta_ = np.dot(w[idx+1].T, delta_next)
+            da = deriva_sigmoid(a[idx+1])
+            
+            deltaH = delta_ * da
+            
+            grad = np.dot(deltaH,a[idx].T)
+            
+            gradW[idx] = grad
+            deltas[idx] = deltaH
+        else:
+            e= a[-1]-a[0]
+            da = deriva_sigmoid(a[-1])
+            
+            delta_f = e*da
+            
+            grad = np.dot(delta_f,a[-2].T)
+            
+            gradW[-1] = grad
+            deltas[-1] = delta_f
+    return(gradW)
 
 # Update DL's Weight with Adam
 def updW_Adam(...):    
@@ -51,6 +91,15 @@ def iniW():
 def softmax(z):
         exp_z = np.exp(z-np.max(z))
         return(exp_z/exp_z.sum(axis=0,keepdims=True))
+
+# Softmax's gradient
+def softmax_grad(x,y,w):
+    z = np.dot(w,x)
+    a = softmax(z)
+    ya = y*np.log(a)
+    cost = (-1/x.shape[1])*np.sum(np.sum(ya))
+    gW = ((-1/x.shape[1])*np.dot((y-a),x.T))
+    return(gW,cost)
 
 # Métrica
 def metricas(x,y):
