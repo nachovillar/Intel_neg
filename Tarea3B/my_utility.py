@@ -63,13 +63,17 @@ def updW_Adam(w, p, q, gradiente, gWs, mu, iteracion):
     b1 = 0.9
     b2 = 0.999
     e = 10**-8
-
-    P = b1*p + (1-b1) * gradiente
-    Q = b2*q + (1-b2) * gradiente**2
-    gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * P/(np.square(Q + e))
+    print("Adam")
+    for i in range(len(w)-1):
+        p[i] = b1*p[i] + (1-b1) * gradiente[i]
+        q[i] = b2*q[i] + (1-b2) * (gradiente[i])**2
+        print(np.linalg.det(np.square(q[i] + e)))
+        gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * (p[i]*      np.linalg.inv(np.square(q[i] + e))       )
+        print(gAdam)
+        w[i] = w[i] - mu*gAdam
+        
     
-    W = w - mu*gAdam
-    return(W, P, Q)
+    return(w, p, q)
 
 #Activation function
 def act_sigmoid(z):
