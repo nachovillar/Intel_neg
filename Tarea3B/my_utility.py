@@ -59,11 +59,11 @@ def grad_bp_dl(a,w):
     return(gradW)
 
 # Update DL's Weight with Adam
-def updW_Adam(w, p, q, gradiente, mu, iteracion):    
+def updW_Adam(w, p, q, gradiente, gWs, mu, iteracion):    
     b1 = 0.9
     b2 = 0.999
     e = 10**-8
-    
+
     P = b1*p + (1-b1) * gradiente
     Q = b2*q + (1-b2) * gradiente**2
     gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * P/(np.square(Q + e))
