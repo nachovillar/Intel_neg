@@ -3,13 +3,26 @@
 import pandas     as pd
 import numpy      as np
 import my_utility as ut
-	
+
+def train_dae(x, W, P, Q,mu,numBatch,BatchSize):
+    for i in range(numBatch):
+        xe   = ut.get_miniBatch(i,x,BatchSize)
+        Act  = ut.forward_dl(xe,W)
+        gW   = ut.grad_bp_dl(Act,W)
+        W, P, Q  = ut.updW_Adam(W, P, Q, gW, mu, i);  #eReMeSPPROP
+    return(W)
+
+
+
 #Training: Deep Learning
 def train_dl(x,y,param):
     W,P,Q     = ut.iniW()    
     numBatch = np.int16(np.floor(x.shape[1]/param[1]))    
     cost = []
-    #completar code
+    for i in range(param[2]):
+        xe  = x[:,np.random.permutation(x.shape[1])] 
+        W   = train_dae(xe, W,P,Q,param[0],numBatch,param[1])
+ 
     return(W, cost) 
    
 # Beginning ...

@@ -33,7 +33,7 @@ def grad_bp_dl(a,w):
     gradW = [None]*len(w)
     deltas = [None]*len(w)
     
-    for idx in reversed(range(len(w))):
+    for idx in reversed(range(len(w)-1)):
         if(idx != (len(w)-1)):
             delta_next = deltas[idx+1]
             
@@ -59,9 +59,17 @@ def grad_bp_dl(a,w):
     return(gradW)
 
 # Update DL's Weight with Adam
-def updW_Adam(...):    
-    #completar code    
-    return(...)
+def updW_Adam(w, p, q, gradiente, mu, iteracion):    
+    b1 = 0.9
+    b2 = 0.999
+    e = 10**-8
+    
+    P = b1*p + (1-b1) * gradiente
+    Q = b2*q + (1-b2) * gradiente**2
+    gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * P/(np.square(Q + e))
+    
+    W = w - mu*gAdam
+    return(W, P, Q)
 
 #Activation function
 def act_sigmoid(z):
@@ -97,9 +105,9 @@ def softmax_grad(x,y,w):
     z = np.dot(w,x)
     a = softmax(z)
     ya = y*np.log(a)
-    cost = (-1/x.shape[1])*np.sum(np.sum(ya))
+    #cost = (-1/x.shape[1])*np.sum(np.sum(ya))
     gW = ((-1/x.shape[1])*np.dot((y-a),x.T))
-    return(gW,cost)
+    return(gW)
 
 # Métrica
 def metricas(x,y):
@@ -143,11 +151,13 @@ def load_data_csv(fname):
     return(x)
 
 #save weights of DL in numpy format
-def save_w_dl(...):    
-    #completar code    
+def save_w_dl(W,npy_w,cost,csv_cost):
+    np.savetxt(csv_cost, cost, delimiter=",")
+    np.savez(npy_w, W=W)
+    return()
     
 #load weight of DL in numpy format
-def load_w_dl(...):
-    #completar code
-    return(...)      
+def load_w_dl(npy_w):
+    w = np.load(npy_w, allow_pickle=True)
+    return w['W']    
 #
