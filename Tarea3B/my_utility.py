@@ -67,10 +67,10 @@ def updW_Adam(w, p, q, gradiente, gWs, mu, iteracion):
     for i in range(len(w)-1):
         p[i] = b1*p[i] + (1-b1) * gradiente[i]
         q[i] = b2*q[i] + (1-b2) * (gradiente[i])**2
-        print(np.linalg.det(np.square(q[i] + e)))
-        gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * (p[i]*      np.linalg.inv(np.square(q[i] + e))       )
-        print(gAdam)
-        w[i] = w[i] - mu*gAdam
+       
+        gAdam = (np.square(1-b2**iteracion)/(1-b1**iteracion) ) * (np.dot(p[i], np.linalg.pinv(np.square(q[i] + e))))
+      
+        w[i] = w[i-1] - mu*gAdam
         
     
     return(w, p, q)
