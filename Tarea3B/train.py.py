@@ -5,22 +5,27 @@ import numpy      as np
 import my_utility as ut
 
 def train_dae(x, y, W, P, Q,mu,numBatch,BatchSize):
+    costos = []
     for i in range(numBatch):
+        print("Iteracion: ", i)
         xe   = ut.get_miniBatch(i,x,BatchSize)
         Act  = ut.forward_dl(xe,W)
         gW   = ut.grad_bp_dl(Act,W)
-        gWs  = ut.softmax_grad(x, y, W[len(W)-1])
-        W, P, Q  = ut.updW_Adam(W, P, Q, gW, gWs, mu, i);  #ADAM
-    return(W)
+        gWs,cost  = ut.softmax_grad(x, y, W[len(W)-1])
+        #print(W[len(W)-1])
+        W, P, Q  = ut.updW_Adam(W, P, Q, gW, gWs, mu, i)  #ADAM
+        costos.append(cost)
+    return(W,costos)
 
 #Training: Deep Learning
 def train_dl(x,y,param):
     W,P,Q = ut.iniW()    
-    numBatch = np.int16(np.floor(x.shape[1]/param[1]))    
+    numBatch = np.int16(np.floor(x.shape[1]/param[1]))  
     cost = []
     for i in range(param[2]):
+        
         xe  = x[:,np.random.permutation(x.shape[1])] 
-        W   = train_dae(xe,y,W,P,Q,param[0],numBatch,param[1])
+        W,cost   = train_dae(xe,y,W,P,Q,param[0],numBatch,param[1])
     return(W, cost) 
    
 # Beginning ...
