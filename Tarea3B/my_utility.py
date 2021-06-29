@@ -10,18 +10,17 @@ def get_miniBatch(i,x,bsize):
 
 #STEP 1: Feed-forward of DAE
 def forward_dl(x,w):
+    lenW = len(w)-1
     Act=[]
     a0=x
     
     z=np.dot(w[0],x)
     a1=act_sigmoid(z)
-    
     Act.append(a0)
     Act.append(a1)
     
     ai=a1
-    
-    for i in range(len(w)):
+    for i in range(lenW):
         if i != 0:
             zi=np.dot(w[i],ai)
             ai=act_sigmoid(zi)
@@ -30,11 +29,12 @@ def forward_dl(x,w):
 
 # STEP 2: Gradiente via BackPropagation
 def grad_bp_dl(a,w):
-    gradW = [None]*len(w)
-    deltas = [None]*len(w)
+    lenW = len(w)-1
+    gradW = [None]*lenW
+    deltas = [None]*lenW
     
-    for idx in reversed(range(len(w)-1)):
-        if(idx != (len(w)-1)):
+    for idx in reversed(range(lenW)):
+        if(idx != (lenW-1)):
             delta_next = deltas[idx+1]
             
             delta_ = np.dot(w[idx+1].T, delta_next)
